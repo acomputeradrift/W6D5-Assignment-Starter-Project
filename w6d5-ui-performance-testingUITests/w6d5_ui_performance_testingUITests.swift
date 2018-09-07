@@ -29,36 +29,42 @@ class w6d5_ui_performance_testingUITests: XCTestCase {
         super.tearDown()
     }
     
-    func test_addMeal(burger: String, calories: Int) {
-        
-        
-        let app = XCUIApplication()
+    func addMeal(mealName:String, numberOfCalories:Int){
         app.navigationBars["Master"].buttons["Add"].tap()
         
         let addAMealAlert = app.alerts["Add a Meal"]
         let collectionViewsQuery = addAMealAlert.collectionViews
-        collectionViewsQuery.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .textField).element.typeText("Burger")
+        collectionViewsQuery.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .textField).element.typeText("\(mealName)")
         
         let textField = collectionViewsQuery.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .textField).element
         textField.tap()
-        textField.typeText("300")
+        textField.typeText("\(numberOfCalories)")
         addAMealAlert.buttons["Ok"].tap()
-      
-   
-
-    
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
-    func testDeleteMeal(){
-        
-        
-        let tablesQuery = XCUIApplication().tables
-        tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Burger - 300"]/*[[".cells.staticTexts[\"Burger - 300\"]",".staticTexts[\"Burger - 300\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.swipeLeft()
-        tablesQuery.buttons["Delete"].tap()
-        
-        
+    func deleteMeal(mealName:String, numberOfCalories:Int){
+        let staticText = app.tables.staticTexts["\(mealName) - \(numberOfCalories)"]
+        if staticText.exists{
+            let tablesQuery = XCUIApplication().tables
+            tablesQuery.staticTexts["\(mealName) - \(numberOfCalories)"].swipeLeft()
+            tablesQuery.buttons["Delete"].tap()
+        }
+    }
+    func utilityMethod(mealName:String, numberOfCalories:Int){
+        XCUIApplication().tables.staticTexts["\(mealName) - \(numberOfCalories)"].tap()
+    }
+
+    
+    func test_addMeal(){
+    addMeal(mealName:"Burger", numberOfCalories: 300)
+    }
+    
+        func test_DeleteMeal(){
+    deleteMeal(mealName:"Burger", numberOfCalories: 300)
+    }
+    
+    func test_showMealDetails(){
+    utilityMethod(mealName: "Burger", numberOfCalories: 300)
     }
     
 }
