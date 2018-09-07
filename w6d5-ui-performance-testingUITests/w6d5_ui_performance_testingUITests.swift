@@ -25,11 +25,14 @@ class w6d5_ui_performance_testingUITests: XCTestCase {
     }
     
     override func tearDown() {
+        deleteMeal(mealName:"Burger", numberOfCalories: 300)
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
     func addMeal(mealName:String, numberOfCalories:Int){
+      
+        
         app.navigationBars["Master"].buttons["Add"].tap()
         
         let addAMealAlert = app.alerts["Add a Meal"]
@@ -50,7 +53,7 @@ class w6d5_ui_performance_testingUITests: XCTestCase {
             tablesQuery.buttons["Delete"].tap()
         }
     }
-    func utilityMethod(mealName:String, numberOfCalories:Int){
+    func showMealDetails(mealName:String, numberOfCalories:Int){
         XCUIApplication().tables.staticTexts["\(mealName) - \(numberOfCalories)"].tap()
     }
 
@@ -64,7 +67,10 @@ class w6d5_ui_performance_testingUITests: XCTestCase {
     }
     
     func test_showMealDetails(){
-    utilityMethod(mealName: "Burger", numberOfCalories: 300)
+    addMeal(mealName:"Burger", numberOfCalories: 300)
+    showMealDetails(mealName: "Burger", numberOfCalories: 300)
+    XCTAssert(app.staticTexts["detailViewControllerLabel"].identifier == "detailViewControllerLabel", "Expected to be displaying detailViewControllerLabel")
+
     }
     
 }
